@@ -1,3 +1,6 @@
+import random
+
+
 class Question:
     # Description: Represents a single question, either multiple-choice or free-form text.
 
@@ -68,20 +71,49 @@ class QuestionBank:
             print(f"ID: {question.question_id}, Shown: {question.times_shown}, Correct: {question.times_answered_correctly}")
 
 
-# class QuizManager:
+class QuizManager:
 # Description: Manages the logic for conducting a quiz or practice session, using questions from the QuestionBank.
-"""
-Attributes: 
-Current score, 
-list of questions used in the session, 
-number of questions (for a test), user's answers.
+# Attributes: 
+    def __init__(self, question_bank):
+        self.question_bank = question_bank
+        # Current score
+        self.current_score = 0
+        # list of questions used in the session
+        self.questions_used = []
+        # number of questions (for a test), user's answers
+        self.questions_answered = []
 
-Methods: 
-Start quiz/test, 
-select next question (randomly or based on criteria for practice), 
-evaluate answer, 
-calculate final score.
-"""
+    # Starts a quiz
+    def start_quiz(self):
+        self.current_score = 0
+        self.questions_used = []
+        self.questions_answered = []
+        self.select_next_question()
+
+    # Select next question
+    def select_next_question(self):
+        # Randomly select a question not yet used
+        remaining_questions = [q for q in self.question_bank.questions if q not in self.questions_used]
+        if remaining_questions:
+            next_question = random.choice(remaining_questions)
+            self.questions_used.append(next_question)
+            return next_question
+        # No more questions available
+        return None 
+    
+    # evaluates user's answer
+    def evaluate_answer(self, question, user_answer):
+        if question.check_answer(user_answer):
+            self.current_score += 1
+            # Record the question as answered correctly
+            self.questions_answered.append(question, True)
+        else:
+            # Record the question as answered incorrectly
+            self.questions_answered.append(question, False)
+
+    def calculate_final_score(self):
+        return self.current_score
+
 
 # PracticeTestSession:
 
