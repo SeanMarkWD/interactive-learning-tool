@@ -8,7 +8,7 @@ class Question:
     def __init__(self, question_id, question_text, correct_answer, possible_answers=None, active=None):
         # question ID
         self.question_id = question_id
-        self.question_text = question_text
+        self._question_text = question_text
         # correct answer
         self.correct_answer = correct_answer
         # possible answers (for multiple-choice)
@@ -34,6 +34,18 @@ class Question:
             self.times_answered_correctly += 1
             return True
         return False
+    
+    # Getter for question_text
+    @property
+    def question_text(self):
+        return self.question_text
+    
+    # Setter for question_text
+    @question_text.setter
+    def question_text(self, new_text):
+        if not new_text.strip():
+            raise ValueError("question_text cannot be empty")
+        self._question_text = new_text
 
 class QuestionBank:
     # Description: Handles a List or collection of Question object.
@@ -123,6 +135,9 @@ class QuizManager:
 
 
 # class UserProfile:
+# NB! Requires validation so using Getters 
+# and Setters the pythonic way is a 
+# great opportunity here
 '''
 Attributes:
 username: A unique identifier for the user. This could be their actual name or a chosen nickname.
