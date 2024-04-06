@@ -17,36 +17,55 @@ class Question:
         self.times_answered_correctly = 0
 
     # Methods
-    # enable/disable
+    # Enable/disable
     def enable(self):
         self.active = True
 
     def disable(self):
         self.active = False
 
-    # check answer (compare user's answer with the correct one)
+    # Check answer (compare user's answer with the correct one)
     def check_answer(self, user_answer):
-        return user_answer.lower() == self.correct_answer.lower()
+        self.times_shown += 1
+        if user_answer.lower() == self.correct_answer.lower():
+            self.times_answered_correctly += 1
+            return True
+        return False
 
+class QuestionBank:
+    # Description: Handles a List or collection of Question object.
+    #Attributes: 
+    def __init__(self):
+        self.questions = []
 
-# class QuestionBank:
-# Description: Handles a collection of questions.
-"""
-Attributes: 
-List or collection of Question objects.
-Methods: 
-add a question, 
-remove a question, 
-fetch a question by ID, 
-enable/disable a question based on ID, 
-"""
+    # Methods: 
+    # Add a question
+    def add_question(self, question):
+        self.questions.append(question)
 
-#Statistics Viewing
-# statistics (times shown, times answered correctly).
-"""
-Method:
-display statistics for all questions.
-"""
+    # Remove a question
+    def remove_question(self, question_id):
+        self.questions = [q for q in self.questions if q.question_id != question_id]
+
+    # Fetch a question by ID
+    def fetch_question_by_id(self, question_id):
+        for question in self.questions:
+            if question.question_id == question_id:
+                return question
+        return None
+
+    # Enable/disable a question based on ID
+    def enable_disable_question(self, question_id, enable=True):
+        question = self.fetch_question_by_id(question_id)
+        if question:
+            if enable:
+                question.enable()
+
+    #Display statistics for all questions
+    # statistics (times shown, times answered correctly).
+    def display_statistics(self):
+        for question in self.questions:
+            print(f"ID: {question.question_id}, Shown: {question.times_shown}, Correct: {question.times_answered_correctly}")
 
 
 # class QuizManager:
