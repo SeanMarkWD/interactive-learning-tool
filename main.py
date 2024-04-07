@@ -1,4 +1,5 @@
 import random
+import hashlib
 
 
 class Question:
@@ -157,28 +158,45 @@ class UserProfile:
     # Methods:
     def login(self, username, password):
         #  Validates user credentials and allows access to their profile.
-        pass
+        hashed_password = self.hash_password(password)
+        if self.username == username and self.password == hashed_password:
+            print("Login successful!")
+        else:
+            print("Invalid username or password.")
 
     def update_profile(self, info):
         # Updates the user's profile information, where info 
         # could be a dictionary containing items like email, 
         # password, or maybe preferences.
-        pass
+        if "email" in info:
+            self.email = info["email"]
+        if "password" in info:
+            self.password = self.hash_password(info["password"])
+        print("Profile updated.")  
 
     def change_password(self, old_password, new_password):
         # Allows the user to change their password, ensuring 
         # they provide the correct current password for security.
-        pass
+        if self.password == self.hash_password(old_password):
+            self.password = self.hash_password(new_password)
+            print("Password changed successfully. ")
+        else:
+            print("The old password is incorrect. ")
 
     def reset_progress(self):
         # Clears the user's progress and score history, starting over from scratch.
-        pass
+        self.score_history = {}
+        self.progress = {}
+        print("Progress has been reset. ")
 
     def get_statistics(self):
+        # Example: Return count of completed tasks
+        tasks_completed = len(self.progress)
+        print(f"Tasks completed: {tasks_completed}")
+        # Examples for further development include:
         # Returns a summary of the user's performance and progress, 
         # such as average scores, most improved areas, 
         # or total time spent on the platform.
-        pass
 
     def save(self):
         # Save user profile to file or database, including 
@@ -190,10 +208,11 @@ class UserProfile:
         # preferences, and progress from storage.
         pass
 
-    @staticmethod
-    def hash_password(password):
+    def hash_password(self, password):
         # Return a hashed version of the password
-        pass
+        # Simple hashing using SHA-256.
+        hashed = hashlib.sha256(password.encode("utf-8")).hexdigest()
+        return hashed
 
 
     # Email getter
@@ -247,10 +266,14 @@ save statistics.
 """
 
 
-# def Main():
+def main():
+    pass
 
 
 if __name__ == "__main__":
+    main()
+
+    """
     user = UserProfile(username="john_doe", email="john.doe@example.com", age=30, password="securepassword123")
     
     # Accessing attributes through getters
@@ -271,3 +294,4 @@ if __name__ == "__main__":
         user.age = -5
     except ValueError as e:
         print(e)
+    """
