@@ -126,7 +126,7 @@ class QuizManager:
             return next_question
         # No more questions available
         return None 
-    
+
     # evaluates user's answer
     def evaluate_answer(self, question, user_answer):
         if question.check_answer(user_answer):
@@ -174,20 +174,33 @@ class PracticeTestSession:
 
     def display_score(self):
         # Display current score
-        pass
+        print(f"Your current score is: {self.score}/{len(self.questions)}")
 
     def reset_session(self):
         #  reset_session for a new round of Practice Test
-        pass
+        self.current_question_index = 0
+        self.score = 0
+        # Assuming responses is a list of tuples (question, user_answer)
+        self.responses.clear()
+        print("Session has been reset. Redy for new round. ")
 
     #Practice Mode:
     def start_practice_mode(self):
         # questions chosen based questions they previously got wrong
-        pass
+        self.questions.sort(key=lambda q: 
+                            q.times_answered_correctly /
+                            q.times_shown if q.times_shown > 0 
+                            else 1, reverse=True)
+        print("Practice mode started. Questions you've struggled with will come first. ")
+        self.reset_question()
 
     def offer_hint(self):
         # Optionally offer a hint for the current question
-        pass
+        current_question = self.questions[self.current_question_index - 1]
+        if hasattr(current_question, "hint") and current_question.hint:
+            print(f"Hint: {current_question.hint}")
+        else:
+            print("No hint available for this question. ")
 
     # Test Mode:
     def start_test_mode(self, number_of_questions):
@@ -201,7 +214,10 @@ class PracticeTestSession:
 
     def select_random_questions(self, number_of_questions):
         # Randomly selects a subset of questions for the test
-        pass
+        if number_of_questions . len(self.questions):
+            print("Requested number of questions exceeds the available pool. Selecting all questions.")
+            return self.questions
+        return random.sample(self.questions, number_of_questions)
 
 
 class UserProfile:
