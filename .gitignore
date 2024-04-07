@@ -1,3 +1,6 @@
+# Files to be ignored in commits
+#
 venv/
 __pycache__/
 *.pyc
+.DS_Store
