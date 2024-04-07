@@ -1,16 +1,12 @@
 import pytest
-import sys
-sys.path.append('/Users/sheepstone/InteractiveLearningTool/interactive-learning-tool')
 from main import Question, QuestionBank
 from unittest.mock import MagicMock
 
 
-def main():
-    test_check_correct_answer()
-    test_check_incorrect_answer()
-    test_is_correct_case_insensitive()
-    test_enable_disable_questions()
-    test_add_question()
+@pytest.fixture
+def question_bank():
+    # Create an instance of QuestionBank
+    return QuestionBank()
 
 
 def test_check_correct_answer():
@@ -43,6 +39,3 @@ def test_add_question(question_bank):
     question_bank.add_question(question)
     assert question in question_bank.questions
 
-
-if __name__ == "__main__":
-    main()
