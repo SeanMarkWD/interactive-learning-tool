@@ -141,16 +141,16 @@ class UserProfile:
 # great opportunity here
 
     # Attributes:
-    def __init__(self, username, email, password, age):
+    def __init__(self, username, email, age, password):
         # A unique identifier for the user. 
         # Could be their actual name or a chosen nickname.
         self.username = username
         # used for account verification, notifications, and password resets.
-        self.email = email
-        self.age = age
+        self._email = email
+        self._age = age
         # Hashed password for login purposes.
         # (Note: It's critical to handle passwords securely
-        self.password =self.hash_password(password)
+        self.password = self.hash_password(password)
         self.score_history = {}
         self.progress = {}
 
@@ -206,12 +206,12 @@ class UserProfile:
     def email(self, new_email):
         if "@" not in new_email or "." not in new_email:
             raise ValueError("This i not a valid email address.")
-        self._email = new_email = new_email
+        self._email = new_email
 
     # Age getter
     @property
     def age(self):
-        return self.age
+        return self._age
     
     # Age setter with validation
     @age.setter
@@ -250,5 +250,24 @@ save statistics.
 # def Main():
 
 
-# if __name == "__main__":
-# Main()
+if __name__ == "__main__":
+    user = UserProfile(username="john_doe", email="john.doe@example.com", age=30, password="securepassword123")
+    
+    # Accessing attributes through getters
+    print(user.email)
+    print(user.age)
+    
+    # Updating attributes through setters
+    user.email = "new_email@example.com"
+    user.age = 25
+    
+    # Attempting to set invalid values
+    try:
+        user.email = "invalid_email"
+    except ValueError as e:
+        print(e)
+
+    try:
+        user.age = -5
+    except ValueError as e:
+        print(e)
