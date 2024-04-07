@@ -141,11 +141,67 @@ class QuizManager:
         return self.current_score
 
 
-# PracticeTestSession:
+class PracticeTestSession:
+    def __init__(self, questions):
+        self.questions = questions
+        self.current_qestion_index = 0
+        self.score = 0
+        # list to store user responses
+        self.responses = []
 
-#Practice Mode
+    def next_question(self):
+        # Logic to display next question
+        if self.current_qestion_index <len(self.questions):
+            current_question = self.questions[self.current_qestion_index]
+            print(f"Question {self.current_qestion_index + 1}: "
+                  f"{current_question.question.text}")
+            self.current_qestion_index += 1
+        else:
+            print("No more questions available. ")
+            self.display_score()
 
-#Test Mode
+    def check_answer(self, user_answer):
+        # Checks user answer and updates the score
+        current_question = self.questions[self.current_qestion_index -1]
+        if current_question.check_answer(user_answer):
+            print("Correct! ")
+            self.score += 1
+        else:
+            print("Incorrect. ")
+            print(f"The correct answer is: {current_question.current_answer}")
+        # Optionally, add response to a list for review later
+        self.response.append((current_question, user_answer))
+
+    def display_score(self):
+        # Display current score
+        pass
+
+    def reset_session(self):
+        #  reset_session for a new round of Practice Test
+        pass
+
+    #Practice Mode:
+    def start_practice_mode(self):
+        # questions chosen based questions they previously got wrong
+        pass
+
+    def offer_hint(self):
+        # Optionally offer a hint for the current question
+        pass
+
+    # Test Mode:
+    def start_test_mode(self, number_of_questions):
+        # Logic to start test mode, which might include:
+        # - Randomly selecting a set number of questions
+        # - Time limits per question or for the entire test
+        self.questions = self.select_random_questions(number_of_questions)
+        self.current_question_index = 0
+        self.score = 0
+        self.response.clear()
+
+    def select_random_questions(self, number_of_questions):
+        # Randomly selects a subset of questions for the test
+        pass
 
 
 class UserProfile:
