@@ -38,4 +38,3 @@ def test_add_question(question_bank):
     question = MagicMock()
     question_bank.add_question(question)
     assert question in question_bank.questions
-
