@@ -1,12 +1,16 @@
 import random
 import hashlib
+import json
 
 
 class Question:
-    # Description: Represents a single question, either multiple-choice or free-form text.
+    # Description: Represents a single question,
+    # either multiple-choice or free-form text.
 
-    # Attributes: 
-    def __init__(self, question_id, question_text, correct_answer, possible_answers=None, active=None):
+    # Attributes:
+    def __init__(self, question_id, question_text,
+                 correct_answer, possible_answers=None, active=None):
+
         # question ID
         self.question_id = question_id
         self._question_text = question_text
@@ -35,12 +39,12 @@ class Question:
             self.times_answered_correctly += 1
             return True
         return False
-    
+
     # Getter for question_text
     @property
     def question_text(self):
         return self.question_text
-    
+
     # Setter for question_text
     @question_text.setter
     def question_text(self, new_text):
@@ -48,20 +52,24 @@ class Question:
             raise ValueError("question_text cannot be empty")
         self._question_text = new_text
 
+
 class QuestionBank:
     # Description: Handles a List or collection of Question object.
-    #Attributes: 
+    # Attributes: 
     def __init__(self):
         self.questions = []
 
-    # Methods: 
+    # Methods:
     # Add a question
     def add_question(self, question):
         self.questions.append(question)
 
     # Remove a question
     def remove_question(self, question_id):
-        self.questions = [q for q in self.questions if q.question_id != question_id]
+        self.questions = [
+            q for q in self.questions
+                          if q.question_id != question_id
+        ]
 
     # Fetch a question by ID
     def fetch_question_by_id(self, question_id):
@@ -81,11 +89,16 @@ class QuestionBank:
     # statistics (times shown, times answered correctly).
     def display_statistics(self):
         for question in self.questions:
-            print(f"ID: {question.question_id}, Shown: {question.times_shown}, Correct: {question.times_answered_correctly}")
+            print(
+                f"ID: {question.question_id}, Shown: "
+                f"{question.times_shown}, "
+                f"Correct: {question.times_answered_correctly}"
+            )
 
 
 class QuizManager:
-# Description: Manages the logic for conducting a quiz or practice session, using questions from the QuestionBank.
+# Description: Manages the logic for conducting a quiz 
+# or practice session, using questions from the QuestionBank.
 # Attributes: 
     def __init__(self, question_bank):
         self.question_bank = question_bank
@@ -194,19 +207,32 @@ class UserProfile:
         tasks_completed = len(self.progress)
         print(f"Tasks completed: {tasks_completed}")
         # Examples for further development include:
-        # Returns a summary of the user's performance and progress, 
-        # such as average scores, most improved areas, 
+        # Returns a summary of the user's performance and progress,
+        # such as average scores, most improved areas,
         # or total time spent on the platform.
 
     def save(self):
-        # Save user profile to file or database, including 
+        # Save user profile to file or database, including
         # updated profile information, progress, and preferences.
-        pass
+        user_data = {
+            "username": self.username,
+            "email": self._email,
+        }
+        with open(f"{self.username}_profile.json", "w") as file:
+            json.dump(user_data, file)
 
-    def loaf():
+    def load(self, username):
         # Retrieves the user's profile information, 
         # preferences, and progress from storage.
-        pass
+        try:
+            with open(f"{self.username}_profile.json", "r") as file:
+                user_data = json.load(file)
+                self.username = user_data["username"]
+                self.email = user_data["email"]
+                # Load other fields as necessary
+                print("Profile loaded successfully. ")
+        except FileNotFoundError:
+            print("Profile not found. ")
 
     def hash_password(self, password):
         # Return a hashed version of the password
@@ -259,10 +285,10 @@ display user's performance metrics.
 Attributes: File paths.
 
 Methods: 
-Load questions, 
-save questions, 
-load statistics, 
-save statistics.
+Load questions,
+save questions,
+load statistics,
+save statistics
 """
 
 
