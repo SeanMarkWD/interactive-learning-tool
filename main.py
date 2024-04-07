@@ -135,11 +135,8 @@ class QuizManager:
 
 
 class UserProfile:
-<<<<<<< HEAD
 # NB! Requires validation so using Getters 
-=======
     # NB! Requires validation so using Getters 
->>>>>>> feature/add-email-age-getters-setters
 # and Setters the pythonic way is a 
 # great opportunity here
 
@@ -198,8 +195,7 @@ class UserProfile:
         # Return a hashed version of the password
         pass
 
-<<<<<<< HEAD
-=======
+
     # Email getter
     @property
     def email(self):
@@ -223,7 +219,7 @@ class UserProfile:
         if not isinstance(new_age, int) or new_age <= 0:
             raise ValueError("Age must be positive integer.")
         self._age = new_age
->>>>>>> feature/add-email-age-getters-setters
+
 
 # class UserStatistics:
 # Description: Tracks and manages statistics related to user performance.
