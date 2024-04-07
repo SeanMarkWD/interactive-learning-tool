@@ -134,25 +134,66 @@ class QuizManager:
 #Test Mode
 
 
-# class UserProfile:
+class UserProfile:
 # NB! Requires validation so using Getters 
 # and Setters the pythonic way is a 
 # great opportunity here
-'''
-Attributes:
-username: A unique identifier for the user. This could be their actual name or a chosen nickname.
-email: The user's email address, used for account verification, notifications, and password resets.
-password: A hashed password for login purposes. (Note: It's critical to handle passwords securely, usually storing only a hashed version rather than the plain text.)
 
-Methods:
-login(): Validates user credentials and allows access to their profile.
-update_profile(info): Updates the user's profile information, where info could be a dictionary containing items like email, password, or preferences.
-change_password(old_password, new_password): Allows the user to change their password, ensuring they provide the correct current password for security.
-reset_progress(): Clears the user's progress and score history, starting over from scratch.
-get_statistics(): Returns a summary of the user's performance and progress, such as average scores, most improved areas, or total time spent on the platform.
-save(): Persists the user's current state, including updated profile information, progress, and preferences, to a file or database.
-load(): Retrieves the user's profile information, preferences, and progress from storage.
-'''
+    # Attributes:
+    def __init__(self, username, email, password, age):
+        # A unique identifier for the user. 
+        # Could be their actual name or a chosen nickname.
+        self.username = username
+        # used for account verification, notifications, and password resets.
+        self.email = email
+        self.age = age
+        # Hashed password for login purposes.
+        # (Note: It's critical to handle passwords securely
+        self.password =self.hash_password(password)
+        self.score_history = {}
+        self.progress = {}
+
+    # Methods:
+    def login(self, username, password):
+        #  Validates user credentials and allows access to their profile.
+        pass
+
+    def update_profile(self, info):
+        # Updates the user's profile information, where info 
+        # could be a dictionary containing items like email, 
+        # password, or maybe preferences.
+        pass
+
+    def change_password(self, old_password, new_password):
+        # Allows the user to change their password, ensuring 
+        # they provide the correct current password for security.
+        pass
+
+    def reset_progress(self):
+        # Clears the user's progress and score history, starting over from scratch.
+        pass
+
+    def get_statistics(self):
+        # Returns a summary of the user's performance and progress, 
+        # such as average scores, most improved areas, 
+        # or total time spent on the platform.
+        pass
+
+    def save(self):
+        # Save user profile to file or database, including 
+        # updated profile information, progress, and preferences.
+        pass
+
+    def loaf():
+        # Retrieves the user's profile information, 
+        # preferences, and progress from storage.
+        pass
+
+    @staticmethod
+    def hash_password(password):
+        # Return a hashed version of the password
+        pass
+
 
 # class UserStatistics:
 # Description: Tracks and manages statistics related to user performance.
