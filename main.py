@@ -1,7 +1,9 @@
 import random
 import hashlib
 import json
+import csv
 from datetime import datetime
+from pathlib import Path
 
 
 class Question:
@@ -402,24 +404,76 @@ def reset_statistics(self):
 class FileManager:
     # Description: Handles reading from and 
     # writing to files (questions, configurations, statistics).
-    def __init__(self):
-        pass
 
-# Attributes: 
-"""
-File paths.
+    # Attributes:
+    def __init__(self, profile_file, questions_file, statistics_file):
+        self.profiles_file = profile_file
+        self.questions_file = questions_file
+        self.statistics_file = statistics_file
 
-Methods: 
-Load questions,
-save questions,
-load statistics,
-save statistics
-"""
+    
+    def save_profiles(self, profiles):
+        with open(self.profiles_file, mode="w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["Username", "Email", "Age", "Password"])
+            for profile in profiles:
+                writer.writerow([profile.username, profile.age, profile.password])
+
+    def load_profiles(self):
+        profiles = []
+        with open(self.profiles_file, mode="r", newline="") as file:
+            reader = csv.reader(file)
+            # Skip the header row
+            next(reader)
+            for row in reader:
+                if row:
+                    profile = UserProfile(username=row[0], email=row[1], age=int(row[2]), password=row[3])
+                    profiles.append(profile)
+        return profiles
+    
+# save questions
+def save_questions(self, questions):
+    # Similar structure to save_profiles, adjusted for question data
+        with open(self.quetions_file, mode="w", newline="", encoding="utf-8") as file:
+            writer =csv.writer(file)
+            writer.writerow(["QuestionID", "QuestionText", "CorrectAnswer", "Options"])
+            for question in questions:
+                options = ";" .join(question.options) if question.options else ""
+                writer.writerow([question.question_id, question.question_text, question.correct_answer, options])
+        
+
+def load_questions(self):
+    # Similar structure to save_profiles, adjusted for question data
+        questions = []
+        with open(self.questions_file, mode='r', newline="", encoding="utf-8") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                options = row['Options'].split(';') if row['Options'] else []
+                question = Question(question_id=row['QuestionID'], question_text=row['QuestionText'],
+                                    correct_answer=row['CorrectAnswer'], options=options)
+                questions.append(question)
+        return questions
+
+def save_statistics(self, statistics):
+    # Similar structure to save_profiles, adjusted for question data
+        with open(self.statistics_file, mode='w', newline="", encoding="utf-8") as file:
+            writer =csv.writer(file)
+            writer.writerow(["Metric", "Value"])
+            for metric, value in statistics.items():
+                writer.writerow([metric, value])
+
+def load_statistics(self):
+    # Similar structure to save_profiles, adjusted for question data
+    statistics = {}
+    with open(self.statistics_file, mode='r', newline="", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            statistics[row["Metric"]] = row["Value"]
+    return statistics
 
 
 def main():
-    pass
-"""
+    
     user = UserProfile(username="john_doe", email="john.doe@example.com", age=30, password="securepassword123")
     
     # Accessing attributes through getters
@@ -452,7 +506,6 @@ def main():
             print(f"Test {test_id} completion time: {time} seconds")
 
         # Additional detailed statistics can be added here
-"""
 
 
 if __name__ == "__main__":
