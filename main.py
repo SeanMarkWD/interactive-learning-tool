@@ -1,6 +1,7 @@
 import random
 import hashlib
 import json
+from datetime import datetime
 
 
 class Question:
@@ -338,23 +339,75 @@ class UserProfile:
         self._age = new_age
 
 
-# class UserStatistics:
+class UserStatistics:
 # Description: Tracks and manages statistics related to user performance.
-"""
-Attributes: 
-Total questions answered, 
-percentage of correct answers, 
-score_history: A list or dictionary that tracks the user's scores on quizzes or tests over time.
 
-Methods: 
-Update statistics, 
-display user's performance metrics.
-"""
+    # Attributes:
+    def __init__(self, user_id):
+        # user_id: A unique identifier for the user.
+        self.user_id = user_id
+        # keep track of scores across different tests or categories
+        self.scores = {}
+        # record how long the user takes to complete certain tasks or tests.
+        self.completion_times = {}
+        # A count of total correct answers.
+        self.correct.answers = 0
+        # A count of total incorrect answers.
+        self.incorrect.answers = 0
+        # A timestamp marking the user's last activity.
+        self.last_activity = datetime.now()
 
-# class File Manager
-# Description: Handles reading from and writing to files (questions, configurations, statistics).
+
+# Methods:
+def update_score(self, test_id, score):
+    # Adds a new score to the scores attribute
+    self.scores[test_id] = score
+    self.last_activity = datetime.now()
+
+def calculate_average_score(self):
+    # Calculates the average score across all tests
+    if not self.scores:
+        return 0
+    return sum(self.scores.values()) / len(self.scores)
+
+def record_completion_time(self, test_id, completion_time):
+    # Records the time taken to complete a test or task
+    self.completion_times[test_id] = completion_time
+    self.last_activity = datetime()
+
+def update_correct_answer_count(self):
+    # Increments the count of correct answers
+    self.correct_answers += 1
+    self.last_activity = datetime()
+
+def update_incorrect_answer_count(self):
+    # Increments the count of incorrect answers
+    self.incorrect_answers += 1
+    self.last_activity = datetime()
+
+def get_last_activity(self):
+    # Returns the date/time of the last activity
+    return self.last_activity.strftime("%Y-%m-%d %H:%M:%S")
+
+def reset_statistics(self):
+    # Resets all statistics for a fresh start
+    self.scores.clear()
+    self.completion_time.clear()
+    self.correct_answers = 0
+    self.incorrect_answers = 0
+    self.last_activity = datetime.now()
+
+
+
+class FileManager:
+    # Description: Handles reading from and 
+    # writing to files (questions, configurations, statistics).
+    def __init__(self):
+        pass
+
+# Attributes: 
 """
-Attributes: File paths.
+File paths.
 
 Methods: 
 Load questions,
@@ -366,12 +419,7 @@ save statistics
 
 def main():
     pass
-
-
-if __name__ == "__main__":
-    main()
-
-    """
+"""
     user = UserProfile(username="john_doe", email="john.doe@example.com", age=30, password="securepassword123")
     
     # Accessing attributes through getters
@@ -392,4 +440,21 @@ if __name__ == "__main__":
         user.age = -5
     except ValueError as e:
         print(e)
-    """
+    
+    def display_user_statistics(user_stats):
+        print(f"User ID: {user_stats.user_id}")
+        print(f"Average Score: {user_stats.calculate_average_score()}")
+        print(f"Correct Answers: {user_stats.correct_answers}")
+        print(f"Incorrect Answers: {user_stats.incorrect_answers}")
+        print(f"Last Activity: {user_stats.get_last_activity()}")
+
+        for test_id, time in user_stats.completion_times.items():
+            print(f"Test {test_id} completion time: {time} seconds")
+
+        # Additional detailed statistics can be added here
+"""
+
+
+if __name__ == "__main__":
+    main()
+
