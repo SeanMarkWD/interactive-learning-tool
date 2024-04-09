@@ -1,4 +1,5 @@
 import random
+import re
 import hashlib
 import json
 import csv
@@ -324,8 +325,8 @@ class UserProfile:
     # Email setter with basic validation
     @email.setter
     def email(self, new_email):
-        if "@" not in new_email or "." not in new_email:
-            raise ValueError("This i not a valid email address.")
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", new_email):
+            raise ValueError("Invalid email address format.")
         self._email = new_email
 
     # Age getter
@@ -339,6 +340,10 @@ class UserProfile:
         if not isinstance(new_age, int) or new_age <= 0:
             raise ValueError("Age must be positive integer.")
         self._age = new_age
+
+    @property
+    def password(self):
+        return self._password
 
 
 class UserStatistics:
@@ -473,27 +478,26 @@ def load_statistics(self):
 
 
 def main():
-    
-    user = UserProfile(username="john_doe", email="john.doe@example.com", age=30, password="securepassword123")
-    
-    # Accessing attributes through getters
-    print(user.email)
-    print(user.age)
-    
-    # Updating attributes through setters
-    user.email = "new_email@example.com"
-    user.age = 25
-    
-    # Attempting to set invalid values
     try:
-        user.email = "invalid_email"
-    except ValueError as e:
-        print(e)
+        user = UserProfile(username="john_doe", email="john.doe@example.com", age=30, password="securepassword123")
+        print("User profile created successfully! ")
+        
+        # Accessing attributes through getters
+        print(user.email)
+        print(user.age)
+        
+        # Updating attributes through setters
+        user.email = "new_email@example.com"
+        user.age = 25
+        
+        # Attempting to set invalid values
+        print(f"Username: {user.username}")
+        print(f"Email: {user.email}")
+        print(f"Age: {user.age}")
+        # Avoid printing passwords directly for security reasons
 
-    try:
-        user.age = -5
     except ValueError as e:
-        print(e)
+        print(f"Error creating user profile: {e}")
     
     def display_user_statistics(user_stats):
         print(f"User ID: {user_stats.user_id}")
