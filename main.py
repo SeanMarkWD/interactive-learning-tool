@@ -234,13 +234,13 @@ class UserProfile:
     def __init__(self, username, email, age, password):
         # A unique identifier for the user. 
         # Could be their actual name or a chosen nickname.
-        self.username = username
+        self._username = username
         # used for account verification, notifications, and password resets.
-        self._email = email
-        self._age = age
+        self.email = email
+        self.age = age
         # Hashed password for login purposes.
         # (Note: It's critical to handle passwords securely
-        self.password = self.hash_password(password)
+        self._password = self.hash_password(password)
         self.score_history = {}
         self.progress = {}
 
@@ -310,12 +310,21 @@ class UserProfile:
         except FileNotFoundError:
             print("Profile not found. ")
 
+    def validate_email(self, email):
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            raise ValueError("Invalid email address format.")
+        return email
+    
     def hash_password(self, password):
         # Return a hashed version of the password
         # Simple hashing using SHA-256.
         hashed = hashlib.sha256(password.encode("utf-8")).hexdigest()
         return hashed
-
+    
+    #Username getter
+    @property
+    def username(self):
+        return self._username
 
     # Email getter
     @property
@@ -325,10 +334,8 @@ class UserProfile:
     # Email setter with basic validation
     @email.setter
     def email(self, new_email):
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", new_email):
-            raise ValueError("Invalid email address format.")
-        self._email = new_email
-
+        self._email = self.validate_email(new_email)
+    
     # Age getter
     @property
     def age(self):
@@ -340,7 +347,7 @@ class UserProfile:
         if not isinstance(new_age, int) or new_age <= 0:
             raise ValueError("Age must be positive integer.")
         self._age = new_age
-
+    
     @property
     def password(self):
         return self._password
