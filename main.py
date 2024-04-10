@@ -310,18 +310,7 @@ class UserProfile:
         except FileNotFoundError:
             print("Profile not found. ")
 
-    def validate_email(self, email):
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-            raise ValueError("Invalid email address format.")
-        return email
-    
-    def hash_password(self, password):
-        # Return a hashed version of the password
-        # Simple hashing using SHA-256.
-        hashed = hashlib.sha256(password.encode("utf-8")).hexdigest()
-        return hashed
-    
-    #Username getter
+
     @property
     def username(self):
         return self._username
@@ -335,7 +324,12 @@ class UserProfile:
     @email.setter
     def email(self, new_email):
         self._email = self.validate_email(new_email)
-    
+
+    def email(self, email):
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            raise ValueError("Invalid email address format.")
+        return email
+
     # Age getter
     @property
     def age(self):
@@ -347,10 +341,16 @@ class UserProfile:
         if not isinstance(new_age, int) or new_age <= 0:
             raise ValueError("Age must be positive integer.")
         self._age = new_age
-    
+
     @property
     def password(self):
         return self._password
+
+    def hash_password(self, password):
+        # Return a hashed version of the password
+        # Simple hashing using SHA-256.
+        hashed = hashlib.sha256(password.encode("utf-8")).hexdigest()
+        return hashed
 
 
 class UserStatistics:
@@ -485,26 +485,27 @@ def load_statistics(self):
 
 
 def main():
+    
+    user = UserProfile(username="john_doe", email="john.doe@example.com", age=30, password="securepassword123")
+    
+    # Accessing attributes through getters
+    print(user.email)
+    print(user.age)
+    
+    # Updating attributes through setters
+    user.email = "new_email@example.com"
+    user.age = 25
+    
+    # Attempting to set invalid values
     try:
-        user = UserProfile(username="john_doe", email="john.doe@example.com", age=30, password="securepassword123")
-        print("User profile created successfully! ")
-        
-        # Accessing attributes through getters
-        print(user.email)
-        print(user.age)
-        
-        # Updating attributes through setters
-        user.email = "new_email@example.com"
-        user.age = 25
-        
-        # Attempting to set invalid values
-        print(f"Username: {user.username}")
-        print(f"Email: {user.email}")
-        print(f"Age: {user.age}")
-        # Avoid printing passwords directly for security reasons
-
+        user.email = "invalid_email"
     except ValueError as e:
-        print(f"Error creating user profile: {e}")
+        print(e)
+
+    try:
+        user.age = -5
+    except ValueError as e:
+        print(e)
     
     def display_user_statistics(user_stats):
         print(f"User ID: {user_stats.user_id}")
@@ -518,6 +519,23 @@ def main():
 
         # Additional detailed statistics can be added here
 
+    profiles = [
+        UserProfile(username="john_doe", email="john.doe@example.com", age=30, password="securepassword123"),
+        UserProfile(username="jane_smith", email="jane.smith@example.com", age=25, password="password456")
+    ]
+
+    # Display the profile details
+    for profile in profiles:
+        print(f"Username: {profile.username}")
+        print(f"Email: {profile.email}")
+        print(f"Age: {profile.age}")
+        print("")
+
+    # Create an instance of FileManager
+    file_manager = FileManager(profile_file='/Users/sheepstone/InteractiveLearningTool/interactive-learning-tool/data/profiles.csv', questions_file='/Users/sheepstone/InteractiveLearningTool/interactive-learning-tool/data/questions.txt', statistics_file='/Users/sheepstone/InteractiveLearningTool/interactive-learning-tool/data/statistics.txt')
+
+    # Save the profiles to the profile file
+    file_manager.save_profiles(profiles)
 
 if __name__ == "__main__":
     main()
