@@ -7,23 +7,13 @@ from datetime import datetime
 from pathlib import Path
 
 
-def add_question():
-    question_id = input("Enter question ID: ")
-    question_text = input("Enter question text: ")
-    correct_answer = input("Enter correct answer: ")
-    options = input("Enter options (if any), separated by commas: ").split(',') if input("Options provided? (Y/N): ").lower() == 'y' else None
-
-    # Create a Question object
-    question = Question(question_id, question_text, correct_answer, options)
-    return question
-
 class Question:
     # Description: Represents a single question,
     # either multiple-choice or free-form text.
 
     # Attributes:
     def __init__(self, question_id, question_text,
-                 correct_answer, possible_answers=None, active=None):
+                 correct_answer, possible_answers=None, active=None, options=None):
 
         # question ID
         self.question_id = question_id
@@ -37,6 +27,17 @@ class Question:
         # update statistics
         self.times_shown = 0
         self.times_answered_correctly = 0
+        self.options = options if options else []
+
+    def add_question(self):
+        question_id = input("Enter question ID: ")
+        question_text = input("Enter question text: ")
+        correct_answer = input("Enter correct answer: ")
+        options = input("Enter options (if any), separated by commas: ").split(',') if input("Options provided? (Y/N): ").lower() == 'y' else None
+
+        # Create a Question object
+        question = Question(question_id, question_text, correct_answer, options)
+        return question
 
     # Methods
     # Enable/disable
