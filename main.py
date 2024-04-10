@@ -7,6 +7,16 @@ from datetime import datetime
 from pathlib import Path
 
 
+def add_question():
+    question_id = input("Enter question ID: ")
+    question_text = input("Enter question text: ")
+    correct_answer = input("Enter correct answer: ")
+    options = input("Enter options (if any), separated by commas: ").split(',') if input("Options provided? (Y/N): ").lower() == 'y' else None
+
+    # Create a Question object
+    question = Question(question_id, question_text, correct_answer, options)
+    return question
+
 class Question:
     # Description: Represents a single question,
     # either multiple-choice or free-form text.
@@ -524,6 +534,21 @@ def main():
         UserProfile(username="jane_smith", email="jane.smith@example.com", age=25, password="password456")
     ]
 
+    questions = []
+
+    # Interactive loop to add questions
+    while True:
+        choice = input("Do you want to add a new question? (Y/N): ").lower()
+        if choice == 'n':
+            break
+        elif choice == 'y':
+            new_question = add_question()
+            questions.append(new_question)
+
+    # After collecting all questions, you can save them using FileManager
+    file_manager = FileManager(profile_file='data/profiles.csv', questions_file='data/questions.txt', statistics_file='data/statistics.txt')
+    file_manager.save_questions(questions)
+
     # Display the profile details
     for profile in profiles:
         print(f"Username: {profile.username}")
@@ -539,4 +564,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
